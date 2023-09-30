@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Running Calories Calculator</title>
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/css/bootstrap.min.css">
+</head>
+<body>
+    <div class="container mt-5">
+        <h1>Running Calories Calculator</h1>
+        <form id="calculator-form">
+            <div class="mb-3">
+                <label for="height">Height (cm):</label>
+                <input type="number" id="height" class="form-control">
+            </div>
+            <div class="mb-3">
+                <label for="weight">Weight (kg):</label>
+                <input type="number" id="weight" class="form-control">
+            </div>
+            <div class="mb-3">
+                <label for="age">Age:</label>
+                <input type="number" id="age" class="form-control">
+            </div>
+            <div class="mb-3">
+                <label for="speed">Running Speed (km/h):</label>
+                <input type="number" id="speed" class="form-control">
+            </div>
+            <div class="mb-3">
+                <label for="distance">Distance (km):</label>
+                <input type="number" id="distance" class="form-control">
+            </div>
+            <button type="button" id="calculate" class="btn btn-primary">Calculate</button>
+        </form>
+        <div class="mt-4">
+            <h3>Calories Burned: <span id="calories">0</span> kcal</h3>
+        </div>
+        <div class="mt-5">
+            <canvas id="caloriesChart" width="400" height="200"></canvas>
+        </div>
+    </div>
+
+    <!-- jQuery -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/js/bootstrap.min.js"></script>
+    <!-- Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script>
+        $(document).ready(function() {
+            $("#calculate").click(function() {
+                const height = parseFloat($("#height").val());
+                const weight = parseFloat($("#weight").val());
+                const age = parseFloat($("#age").val());
+                const speed = parseFloat($("#speed").val());
+                const distance = parseFloat($("#distance").val());
+
+                // Calculate calories burned (simplified formula)
+                const caloriesBurned = ((0.035 * weight) + ((speed / 3.5) + 0.029) * weight * (speed / 3.5)) / 200 * 60 * distance;
+
+                // Display calories burned
+                $("#calories").text(caloriesBurned.toFixed(2));
+
+                // Chart
+                const ctx = document.getElementById("caloriesChart").getContext("2d");
+                const myChart = new Chart(ctx, {
+                    type: "bar",
+                    data: {
+                        labels: ["Calories Burned"],
+                        datasets: [{
+                            label: "Calories Burned",
+                            data: [caloriesBurned.toFixed(2)],
+                            backgroundColor: "rgba(75, 192, 192, 0.6)",
+                            borderWidth: 1
+                        }]
+                    },
+                    options: {
+                        scales: {
+                            y: {
+                                beginAtZero: true
+                            }
+                        }
+                    }
+                });
+            });
+        });
+    </script>
+</body>
+</html>
